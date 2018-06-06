@@ -1,0 +1,12 @@
+{
+    "name": "kevinvancleef/elastic-compare",
+    "require": {
+        "elasticsearch/elasticsearch": "^6.0"
+    },
+    "authors": [
+        {
+            "name": "Kevin van Cleef",
+            "email": "kevin@developmentstudio.nl"
+        }
+    ]
+}
