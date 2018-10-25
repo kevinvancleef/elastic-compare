@@ -105,8 +105,7 @@ class Document
         $targetMap = [];
         foreach ($target as $key => $targetValue) {
             if (!isset($targetValue[$sortKey])) {
-                var_dump($targetValue);
-                continue;
+                throw new \RuntimeException("SortKey '$sortKey' not found in target document: " . json_encode($targetValue));
             }
 
             $targetMap[$targetValue[$sortKey]] = $targetValue;
