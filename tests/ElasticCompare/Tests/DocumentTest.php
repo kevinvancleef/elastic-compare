@@ -178,8 +178,8 @@ class DocumentTest extends TestCase
                         'c' => 3.001,
                     ]
                 ],
-                'expectedSourceDiff' => ['a' => []],
-                'expectedTargetDiff' => ['a' => []]
+                'expectedSourceDiff' => [],
+                'expectedTargetDiff' => []
             ],
             [
                 'source' => [
@@ -281,16 +281,8 @@ class DocumentTest extends TestCase
                         'a' => []
                     ]
                 ],
-                'expectedSourceDiff' => [
-                    'a' => [
-                        'a' => []
-                    ]
-                ],
-                'expectedTargetDiff' => [
-                    'a' => [
-                        'a' => []
-                    ]
-                ]
+                'expectedSourceDiff' => [],
+                'expectedTargetDiff' => []
             ],
             [
                 'source' => [
@@ -311,16 +303,8 @@ class DocumentTest extends TestCase
                         ]
                     ]
                 ],
-                'expectedSourceDiff' => [
-                    'a' => [
-                        'a' => []
-                    ]
-                ],
-                'expectedTargetDiff' => [
-                    'a' => [
-                        'a' => []
-                    ]
-                ]
+                'expectedSourceDiff' => [],
+                'expectedTargetDiff' => []
             ],
             [
                 'source' => [
@@ -398,8 +382,8 @@ class DocumentTest extends TestCase
                         'B'
                     ]
                 ],
-                'expectedSourceDiff' => ['a' => []],
-                'expectedTargetDiff' => ['a' => []]
+                'expectedSourceDiff' => [],
+                'expectedTargetDiff' => []
             ],
             [
                 'source' => [
@@ -461,8 +445,8 @@ class DocumentTest extends TestCase
                         ]
                     ]
                 ],
-                'expectedSourceDiff' => ['a' => []],
-                'expectedTargetDiff' => ['a' => []]
+                'expectedSourceDiff' => [],
+                'expectedTargetDiff' => []
             ],
             [
                 'source' => [

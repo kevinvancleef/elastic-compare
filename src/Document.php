@@ -70,7 +70,7 @@ class Document
         ksort($source);
         ksort($target);
 
-        return $target;
+        return $this->cleanupDiff($source, $target);
     }
 
     /**
@@ -170,5 +170,22 @@ class Document
         return array_values(array_filter($array, function ($value) {
             return !(\is_array($value) && empty($value));
         }));
+    }
+
+    private function cleanupDiff(array &$source, array $target): array
+    {
+        foreach ($source as $key => &$sourceValue) {
+            if (\is_array($sourceValue) && array_key_exists($key, $target) && \is_array($target[$key])) {
+                if (empty($sourceValue)) {
+                    unset($source[$key]);
+                }
+
+                if (empty($target[$key])) {
+                    unset($target[$key]);
+                }
+            }
+        }
+
+        return $target;
     }
 }
