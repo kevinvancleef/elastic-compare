@@ -12,27 +12,33 @@ class Document
     /** @var array */
     private $sortKeysForSequentialArrays;
 
+    /** @var bool */
+    private $strict;
+
     /**
      * @param array $sortKeysForSequentialArrays
+     * @param bool $strict
      */
-    private function __construct(array $sortKeysForSequentialArrays)
+    private function __construct(array $sortKeysForSequentialArrays,  bool $strict)
     {
         $this->sortKeysForSequentialArrays = $sortKeysForSequentialArrays;
+        $this->strict = $strict;
     }
 
     /**
      * @param array $sortKeysForSequentialArrays
+     * @param bool $strict
      * @return Document
      */
-    public static function getInstance(array $sortKeysForSequentialArrays): Document
+    public static function getInstance(array $sortKeysForSequentialArrays, bool $strict = true): Document
     {
         if (self::$instance instanceof self) {
             return self::$instance;
         }
 
-        self::$instance = new Document($sortKeysForSequentialArrays);
+        self::$instance = new Document($sortKeysForSequentialArrays, $strict);
 
-        return self::getInstance($sortKeysForSequentialArrays);
+        return self::getInstance($sortKeysForSequentialArrays, $strict);
     }
 
     /**
@@ -129,7 +135,7 @@ class Document
      */
     private function isSameValue($a, $b = null): bool
     {
-        return $a === $b;
+        return $this->strict ? $a === $b : $a == $b;
     }
 
     /**
