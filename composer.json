@@ -1,12 +1,25 @@
 {
-    "name": "kevinvancleef/elastic-compare",
-    "require": {
-        "elasticsearch/elasticsearch": "^6.0"
-    },
-    "authors": [
-        {
-            "name": "Kevin van Cleef",
-            "email": "kevin@developmentstudio.nl"
-        }
-    ]
+  "name": "kevinvancleef/elastic-compare",
+  "require": {
+    "elasticsearch/elasticsearch": "^6.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.4"
+  },
+  "authors": [
+    {
+      "name": "Kevin van Cleef",
+      "email": "kevin@developmentstudio.nl"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "ElasticCompare\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ElasticCompare\\Tests\\": "tests/"
+    }
+  }
 }
