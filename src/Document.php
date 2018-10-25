@@ -115,7 +115,7 @@ class Document
         foreach ($source as $key => &$sourceValue) {
             $keyValue = $sourceValue[$sortKey];
 
-            $diff = $this->diff($sourceValue, $targetMap[$sourceValue[$sortKey]] ?? []);
+            $diff = $this->diff($sourceValue, $targetMap[$keyValue] ?? []);
 
             $targetMap[$keyValue] = $diff;
         }
@@ -172,6 +172,11 @@ class Document
         }));
     }
 
+    /**
+     * @param array $source
+     * @param array $target
+     * @return array
+     */
     private function cleanupDiff(array &$source, array $target): array
     {
         foreach ($source as $key => &$sourceValue) {
