@@ -77,7 +77,7 @@ while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0)
     foreach ($targetDocuments as $targetDocument) {
         // Check if exists.
         if (!$targetDocument['found']) {
-            echo $source['index'] . '/' . $source['type'] . '/' . $targetDocument['_id'] . " not found in " . $target['index'] . '/' . $target['type'] . PHP_EOL;
+            echo $source['index'] . '/' . $source['type'] . '/' . $targetDocument['_id'] . ' not found in ' . $target['index'] . '/' . $target['type'] . PHP_EOL;
             echo PHP_EOL;
             continue;
         }
@@ -103,9 +103,13 @@ while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0)
         }
 
         if (!empty($sourceDocument) || !empty($targetDiff)) {
-            echo 'SOURCE DOCUMENT' . PHP_EOL;
+            $sourceDocUrl = $host . '/' . $source['index'] . '/' . $source['type'] . '/' . $documentId;
+            $targetDocUrl = $host . '/' . $target['index'] . '/' . $target['type'] . '/' . $documentId;
+
+            echo "DIFFERENCES FOR $documentId" . PHP_EOL;
+            echo "($documentId) SOURCE DOCUMENT: $sourceDocUrl" . PHP_EOL;
             echo json_encode($sourceDocument) . PHP_EOL . PHP_EOL;
-            echo 'TARGET DOCUMENT' . PHP_EOL;
+            echo "($documentId) TARGET DOCUMENT: $targetDocUrl" . PHP_EOL;
             echo json_encode($targetDiff) . PHP_EOL . PHP_EOL;
         }
     }
