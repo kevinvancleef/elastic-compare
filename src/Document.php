@@ -66,7 +66,7 @@ class Document
                 $target[$key] = $this->cleanupSequentialArrayForDiff($this->diffSequentialArray(
                     $sourceValue,
                     $targetValue,
-                    $this->sortKeysForSequentialArrays[$key] ?? null
+                    $this->sortKeysForSequentialArrays[$key] ?? []
                 ));
                 $source[$key] = $this->cleanupSequentialArrayForDiff($sourceValue);
             }
@@ -82,11 +82,11 @@ class Document
     /**
      * @param array $source
      * @param array $target
-     * @param string|null $sortKey
+     * @param array $sortKey
      * @return array
      * @throws \RuntimeException
      */
-    private function diffSequentialArray(array &$source, array $target, string $sortKey = null): array
+    private function diffSequentialArray(array &$source, array $target, $sortKey = []): array
     {
         if (isset($source[0]) && (\is_bool($source[0]) || \is_string($source[0]) || \is_scalar($source[0]))) {
             $this->sortSequentialArray($source);
@@ -101,7 +101,7 @@ class Document
             return $target;
         }
 
-        if ($sortKey === null) {
+        if (\count($sortKey) === 0) {
             throw new \RuntimeException('Please define sort key for: ' . json_encode($target));
         }
 
@@ -130,33 +130,39 @@ class Document
 
     /**
      * @param array $array
-     * @param string|null $sortKey
+     * @param array $sortKeys
      * @return mixed|null
      */
-    private function getSortValueForSortKey(array $array, string $sortKey = null)
+    private function getSortValueForSortKey(array $array, array $sortKeys = [])
     {
-        $sortKeyParts = explode('.', $sortKey);
+        $combinedSortValue = null;
 
-        $sortValue = null;
-        foreach($sortKeyParts as $key) {
-            if ($sortValue === null) {
-                if (!array_key_exists($key, $array)) {
+        foreach ($sortKeys as $sortKey) {
+            $sortKeyParts = explode('.', $sortKey);
+
+            $sortValueForKey = null;
+            foreach($sortKeyParts as $key) {
+                if ($sortValueForKey === null) {
+                    if (!array_key_exists($key, $array)) {
+                        break;
+                    }
+
+                    $sortValueForKey = $array[$key];
+
+                    continue;
+                }
+
+                if (!array_key_exists($key, $sortValueForKey)) {
                     break;
                 }
 
-                $sortValue = $array[$key];
-
-                continue;
+                $sortValueForKey = $sortValueForKey[$key];
             }
 
-            if (!array_key_exists($key, $sortValue)) {
-                break;
-            }
-
-            $sortValue = $sortValue[$key];
+            $combinedSortValue .= $sortValueForKey;
         }
 
-        return $sortValue;
+        return $combinedSortValue;
     }
 
     /**
@@ -180,9 +186,9 @@ class Document
 
     /**
      * @param array $array
-     * @param string $sortKey
+     * @param array $sortKey
      */
-    private function sortSequentialArray(array &$array, string $sortKey = null)
+    private function sortSequentialArray(array &$array, array $sortKey = [])
     {
         usort($array, function ($a, $b) use ($sortKey) {
             if (!\is_array($a)) {

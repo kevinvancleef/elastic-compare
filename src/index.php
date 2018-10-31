@@ -12,7 +12,10 @@ $target = parseTargetIndex($argv);
 $host = parseHost($argv);
 
 $sortKeysForSequentialArrays = [
-    'facets' => 'key'
+    'facets' => ['key', 'value'],
+    'stockClusterAvailabilityState' => ['stockClusterId'],
+    'promoIcons' => ['displayText'],
+    'secondChanceProducts' => ['secondChanceInformation.productId']
 ];
 
 #################### CONFIGURATION ####################
@@ -84,12 +87,7 @@ while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0)
 
         $documentId = $targetDocument['_id'];
 
-        $documentCompare = Document::getInstance([
-            'facets' => 'key',
-            'stockClusterAvailabilityState' => 'stockClusterId',
-            'promoIcons' => 'displayText',
-            'secondChanceProducts' => 'secondChanceInformation.productId'
-        ]);
+        $documentCompare = Document::getInstance($sortKeysForSequentialArrays);
 
         $sourceDocument = $sourceDocumentMap[$documentId]['_source'];
 

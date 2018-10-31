@@ -20,8 +20,9 @@ class DocumentTest extends TestCase
     public function testDiff(array $source, array $target, array $expectedSourceDiff, array $expectedTargetDiff)
     {
         $document = Document::getInstance([
-            'a' => 'key',
-            'nested' => 'a.id'
+            'a' => ['key'],
+            'nested' => ['a.id'],
+            'multi' => ['a', 'b']
         ]);
 
         $diff = $document->diff($source, $target);
@@ -530,18 +531,66 @@ class DocumentTest extends TestCase
                         ],
                     ]
                 ],
-                'expectedSourceDiff' => ['a' => [
-                    [
-                        'key' => 'D',
-                        'a' => 'C'
+                'expectedSourceDiff' => [
+                    'a' => [
+                        [
+                            'key' => 'D',
+                            'a' => 'C'
+                        ]
                     ]
-                ]],
-                'expectedTargetDiff' => ['a' => [
-                    [
-                        'key' => 'A',
-                        'a' => 'C'
+                ],
+                'expectedTargetDiff' => [
+                    'a' => [
+                        [
+                            'key' => 'A',
+                            'a' => 'C'
+                        ]
                     ]
-                ]]
+                ]
+            ],
+            [
+                'source' => [
+                    'multi' => [
+                        [
+                            'a' => 'B',
+                            'b' => '3'
+                        ],
+                        [
+                            'a' => 'A',
+                            'b' => '2'
+                        ],
+                        [
+                            'a' => 'A',
+                            'b' => '1'
+                        ],
+                        [
+                            'a' => 'B',
+                            'b' => '1'
+                        ]
+                    ]
+                ],
+                'target' => [
+                    'multi' => [
+                        [
+                            'a' => 'B',
+                            'b' => '1'
+                        ],
+                        [
+                            'a' => 'A',
+                            'b' => '2'
+                        ],
+                        [
+                            'a' => 'B',
+                            'b' => '3'
+                        ],
+                        [
+                            'a' => 'A',
+                            'b' => '1'
+                        ]
+                    ]
+                ],
+                'expectedSourceDiff' => [],
+                'expectedTargetDiff' => []
             ],
         ];
     }
