@@ -21,6 +21,7 @@ $sortKeysForSequentialArrays = [
 #################### CONFIGURATION ####################
 
 const SCROLL_TIME = '30s';
+const SCROLL_BATCH_SIZE = 10;
 
 #################### DO NOT CHANGE ANYTHING BELOW THIS LINE ####################
 
@@ -30,7 +31,7 @@ $client = ClientBuilder::create()
 
 $params = [
     'scroll' => SCROLL_TIME,          // how long between scroll requests. should be small!
-    'size' => 10,                     // how many results *per shard* you want back
+    'size' => SCROLL_BATCH_SIZE,      // how many results *per shard* you want back
     'index' => $source['index'],
     'type' => $source['type'],
     'body' => [
