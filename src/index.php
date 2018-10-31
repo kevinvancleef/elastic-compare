@@ -87,7 +87,8 @@ while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0)
         $documentCompare = Document::getInstance([
             'facets' => 'key',
             'stockClusterAvailabilityState' => 'stockClusterId',
-            'promoIcons' => 'name'
+            'promoIcons' => 'displayText',
+            'secondChanceProducts' => 'secondChanceInformation.productId'
         ]);
 
         $sourceDocument = $sourceDocumentMap[$documentId]['_source'];

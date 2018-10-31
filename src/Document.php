@@ -109,23 +109,54 @@ class Document
         $this->sortSequentialArray($target, $sortKey);
 
         $targetMap = [];
-        foreach ($target as $key => $targetValue) {
-            if (!isset($targetValue[$sortKey])) {
-                throw new \RuntimeException("SortKey '$sortKey' not found in target document: " . json_encode($targetValue));
-            }
+        foreach ($target as $targetValue) {
+            $targetSortValue = $this->getSortValueForSortKey($targetValue, $sortKey);
 
-            $targetMap[$targetValue[$sortKey]] = $targetValue;
+            if ($targetSortValue === null) {
+                $targetMap[] = $targetValue;
+            } else {
+                $targetMap[$targetSortValue] = $targetValue;
+            }
         }
 
-        foreach ($source as $key => &$sourceValue) {
-            $keyValue = $sourceValue[$sortKey];
+        foreach ($source as &$sourceValue) {
+            $sourceSortValue = $this->getSortValueForSortKey($sourceValue, $sortKey);
 
-            $diff = $this->diff($sourceValue, $targetMap[$keyValue] ?? []);
-
-            $targetMap[$keyValue] = $diff;
+            $targetMap[$sourceSortValue] = $this->diff($sourceValue, $targetMap[$sourceSortValue] ?? []);
         }
 
         return array_values($targetMap);
+    }
+
+    /**
+     * @param array $array
+     * @param string|null $sortKey
+     * @return mixed|null
+     */
+    private function getSortValueForSortKey(array $array, string $sortKey = null)
+    {
+        $sortKeyParts = explode('.', $sortKey);
+
+        $sortValue = null;
+        foreach($sortKeyParts as $key) {
+            if ($sortValue === null) {
+                if (!array_key_exists($key, $array)) {
+                    break;
+                }
+
+                $sortValue = $array[$key];
+
+                continue;
+            }
+
+            if (!array_key_exists($key, $sortValue)) {
+                break;
+            }
+
+            $sortValue = $sortValue[$key];
+        }
+
+        return $sortValue;
     }
 
     /**
@@ -158,11 +189,14 @@ class Document
                 return $a <=> $b;
             }
 
-            if (!isset($a[$sortKey], $b[$sortKey])) {
+            $sortValueA = $this->getSortValueForSortKey($a, $sortKey);
+            $sortValueB = $this->getSortValueForSortKey($b, $sortKey);
+
+            if (!isset($sortValueA, $sortValueB)) {
                 return 0;
             }
 
-            return $a[$sortKey] <=> $b[$sortKey];
+            return $sortValueA <=> $sortValueB;
         });
     }
 

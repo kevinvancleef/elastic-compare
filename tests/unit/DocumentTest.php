@@ -20,7 +20,8 @@ class DocumentTest extends TestCase
     public function testDiff(array $source, array $target, array $expectedSourceDiff, array $expectedTargetDiff)
     {
         $document = Document::getInstance([
-            'a' => 'key'
+            'a' => 'key',
+            'nested' => 'a.id'
         ]);
 
         $diff = $document->diff($source, $target);
@@ -442,6 +443,54 @@ class DocumentTest extends TestCase
                         [
                             'key' => 'A',
                             'a' => 'C'
+                        ]
+                    ]
+                ],
+                'expectedSourceDiff' => [],
+                'expectedTargetDiff' => []
+            ],
+            [
+                'source' => [
+                    'nested' => [
+                        [
+                            'key' => 'C',
+                            'a' => [
+                                'id' => '2'
+                            ]
+                        ],
+                        [
+                            'key' => 'A',
+                            'a' => [
+                                'id' => '1'
+                            ]
+                        ],
+                        [
+                            'key' => 'B',
+                            'a' => [
+                                'id' => '3'
+                            ]
+                        ]
+                    ]
+                ],
+                'target' => [
+                    'nested' => [
+                        [
+                            'key' => 'A',
+                            'a' => [
+                                'id' => '1'
+                            ]
+                        ],
+                        [
+                            'key' => 'B',
+                            'a' => [
+                                'id' => '3'
+                            ]
+                        ],
+                        [
+                            'key' => 'C',
+                            'a' => [
+                                'id' => '2'
+                            ]
                         ]
                     ]
                 ],
